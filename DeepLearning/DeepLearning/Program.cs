@@ -61,7 +61,7 @@ namespace DeepLearning
             outputs.Add(English);
             outputs.Add(Italian);
 
-            NeuralNetwork LanguageNeuralNet = new NeuralNetwork(allinputs, outputs, new int[] { 5, 5 });
+            NeuralNetwork LanguageNeuralNet = new NeuralNetwork(allinputs, outputs, new int[] { 100 });
 
 
             int counterEN, counterIT;
