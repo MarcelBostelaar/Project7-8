@@ -23,15 +23,15 @@ namespace DeepLearning
         /// </summary>
         private void BuildEquations()
         {
-            foreach(var outputneuron in Output)
+            Parallel.ForEach(Output, outputneuron =>
             {
                 var resultformula = outputneuron.BuildEquation();
                 resultformula = resultformula.Simplify();
-                
+
                 var partial_deritatives = Derivatives.CalculatePartialDerivatives(resultformula);
 
                 OutputFormulas.Add(new Tuple<OutputData, SyntaxBlock, List<Tuple<VariableArgumentValue, SyntaxBlock>>>(outputneuron.Value, resultformula, partial_deritatives));
-            }
+            });            
         }
 
         /// <summary>

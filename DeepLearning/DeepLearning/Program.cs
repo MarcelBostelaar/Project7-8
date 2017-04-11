@@ -61,7 +61,7 @@ namespace DeepLearning
             outputs.Add(English);
             outputs.Add(Italian);
 
-            NeuralNetwork LanguageNeuralNet = new NeuralNetwork(allinputs, outputs, new int[] { 20 });
+            NeuralNetwork LanguageNeuralNet = new NeuralNetwork(allinputs, outputs, new int[] { 5, 5 });
 
 
             int counterEN, counterIT;
@@ -131,7 +131,7 @@ namespace DeepLearning
                         Wrong++;
                 }
 
-                if ((counterEN + counterIT) % 1000 == 0)
+                if ((counterEN + counterIT) == 7000)
                 {
                     double percentageright = (double)Right / (double)(Right + Wrong) * 100f;
                     int lol = 9;

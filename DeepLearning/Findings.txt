@@ -1,0 +1,8 @@
+Performance, 7000 iterations, EN-IT trainingsdata on language recognition:
+1 layer , 10 nodes each.	86% accuracy
+2 layers, 10 nodes each.	80% accuracy
+3 layers, 10 nodes each.	15 min+ for setup, aborted
+
+1 layer,  20 nodes each.	83% accuracy
+1 layer,   5 nodes each.	83% accuracy
+2 layers,  5 nodes each.	86% accuracy
