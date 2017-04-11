@@ -18,7 +18,7 @@ namespace MathSyntax
             var AllVariableVariables = Formula.GetAllVariables(true);
             var distinctVariables = AllVariableVariables.Distinct();
             List<Tuple<VariableArgumentValue, SyntaxBlock>> PartialDerivatives = new List<Tuple<VariableArgumentValue, SyntaxBlock>>();
-
+            
             foreach (ArgumentValue i in distinctVariables) {
                 PartialDerivatives.Add(new Tuple<VariableArgumentValue, SyntaxBlock>((VariableArgumentValue)i, Formula.Derivative((VariableArgumentValue)i).Simplify()));
             }

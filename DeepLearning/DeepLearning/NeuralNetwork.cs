@@ -9,6 +9,8 @@ namespace DeepLearning
 {
     class NeuralNetwork
     {
+        private const double Stepsize = 0.01;
+
         List<InputNeuron> Input;
         List<OutputNeuron> Output;
         List<List<Neuron>> InbetweenLayers;
@@ -25,6 +27,7 @@ namespace DeepLearning
             {
                 var resultformula = outputneuron.BuildEquation();
                 resultformula = resultformula.Simplify();
+                
                 var partial_deritatives = Derivatives.CalculatePartialDerivatives(resultformula);
 
                 OutputFormulas.Add(new Tuple<OutputData, SyntaxBlock, List<Tuple<VariableArgumentValue, SyntaxBlock>>>(outputneuron.Value, resultformula, partial_deritatives));
@@ -59,6 +62,7 @@ namespace DeepLearning
                 {
                     list.Add(new Neuron());
                 }
+                InbetweenLayers.Add(list);
             }
             
             foreach(var i in Input) //link the input layer to the first middle layer
@@ -96,13 +100,15 @@ namespace DeepLearning
 
 
         Random random = new Random();
+        int Counter = 0;
         /// <summary>
         /// Builds a new VariableArgumentValue with a random value between -1 and 1, to be used for inbetween nodes.
         /// </summary>
         /// <returns>VariableArgumentValue with a random value between -1 and 1</returns>
         private VariableArgumentValue RandomVariableValue()
         {
-            var i = new VariableArgumentValue("");
+            var i = new VariableArgumentValue(Counter.ToString());
+            Counter++;
             i.Value = (random.NextDouble()-0.5)*2;
             return i;
         }
@@ -115,6 +121,37 @@ namespace DeepLearning
             }
         }
 
+        public void Learn()
+        {
+            Dictionary<VariableArgumentValue, double> TotalSlope = new Dictionary<VariableArgumentValue, double>();
+            foreach(var outputnodeFormulas in OutputFormulas)
+            {
+                foreach(var PartialDerivative in outputnodeFormulas.Item3)
+                {
+                    double InDict;
+                    TotalSlope.TryGetValue(PartialDerivative.Item1, out InDict);
+                    if (outputnodeFormulas.Item1.MustBeHigh)
+                    {
+                        TotalSlope[PartialDerivative.Item1] = InDict - PartialDerivative.Item2.Calculate();
+                    }
+                    else
+                    {
+                        TotalSlope[PartialDerivative.Item1] = InDict + PartialDerivative.Item2.Calculate();
+                    }
+                }
+            }
 
+            var keys = TotalSlope.Keys;
+            double TotalLenghtSquared = 0;
+            foreach(var key in keys)
+            {
+                TotalLenghtSquared += TotalSlope[key]* TotalSlope[key];
+            }
+            double TotalLenght = Math.Sqrt(TotalLenghtSquared);
+            foreach(var key in keys)
+            {
+                key.Value -= TotalSlope[key] / TotalLenght * Stepsize;
+            }
+        }
     }
 }
