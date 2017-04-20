@@ -38,6 +38,8 @@ namespace DeepLearning
 
         static void Main()
         {
+            List<string> Accuracy = new List<string>();
+
             var EngWord = File.ReadAllLines("EN.filtered");
             var ITWord = File.ReadAllLines("IT.filtered");
 
@@ -61,7 +63,7 @@ namespace DeepLearning
             outputs.Add(English);
             outputs.Add(Italian);
 
-            NeuralNetwork LanguageNeuralNet = new NeuralNetwork(allinputs, outputs, new int[] { 100 });
+            NeuralNetwork LanguageNeuralNet = new NeuralNetwork(allinputs, outputs, new int[] { 20 });
 
 
             int counterEN, counterIT;
@@ -72,7 +74,12 @@ namespace DeepLearning
             Right = 0;
             Wrong = 0;
 
-            while(counterEN+counterIT< EngWord.Length + ITWord.Length)
+            {
+                var accur = CalculateAccurary(Wordspace, LanguageNeuralNet, English, Italian, EngWord, ITWord);
+                Accuracy.Add((counterEN + counterIT).ToString() + ";" + accur.ToString());
+            }
+
+            while (counterEN+counterIT< EngWord.Length + ITWord.Length)
             {
                 string word;
                 if(random.Next()%2 == 0)
@@ -130,13 +137,53 @@ namespace DeepLearning
                     else
                         Wrong++;
                 }
-
-                if ((counterEN + counterIT) == 7000)
+                if ((counterEN + counterIT) % 50 == 0)
                 {
-                    double percentageright = (double)Right / (double)(Right + Wrong) * 100f;
-                    int lol = 9;
+                    var accur = CalculateAccurary(Wordspace, LanguageNeuralNet, English, Italian, EngWord, ITWord);
+                    Accuracy.Add((counterEN + counterIT).ToString() + ";" + accur.ToString());
                 }
+
+
+                //if ((counterEN + counterIT) == 7000)
+                //{
+                //    double percentageright = (double)Right / (double)(Right + Wrong) * 100f;
+                //    int lol = 9;
+                //}
             }
+            
+            File.WriteAllLines("Results20NodesAccurary.txt", Accuracy.ToArray());
+        }
+
+        static double CalculateAccurary(List<CharSpace> wordspace, NeuralNetwork network, OutputData english, OutputData italian, string[] englishwords, string[] italianwords)
+        {
+            double right = 0;
+            double wrong = 0;
+            for (int i = 0; i < englishwords.Length; i++)
+            {
+                for (int j = 0; j < wordspace.Count; j++)
+                {
+                    wordspace[j].SetLetter(englishwords[i][j]);
+                }
+                network.CalculateResults();
+                if (english.Value > italian.Value)
+                    right++;
+                else
+                    wrong++;
+            }
+            for (int i = 0; i < italianwords.Length; i++)
+            {
+                for (int j = 0; j < wordspace.Count; j++)
+                {
+                    wordspace[j].SetLetter(italianwords[i][j]);
+                }
+                network.CalculateResults();
+                if (english.Value < italian.Value)
+                    right++;
+                else
+                    wrong++;
+            }
+
+            return right / (right + wrong) * 100;
         }
     }
 }
