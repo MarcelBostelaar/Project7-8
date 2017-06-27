@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace MathSyntax
+namespace DeepLearning.MathSyntax
 {
     class Sum : SyntaxBlock
     {
@@ -35,7 +36,7 @@ namespace MathSyntax
             return listA;
         }
 
-        public bool IsConstant(VariableArgumentValue Non_Constant)
+        public bool IsConstant(ArgumentValue Non_Constant)
         {
             if (A.IsConstant(Non_Constant) && B.IsConstant(Non_Constant))
             {
@@ -47,7 +48,7 @@ namespace MathSyntax
             }
         }
 
-        public SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive)
+        public SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
         {
             return new Sum(A.Derivative(ArgumentToDerive), B.Derivative(ArgumentToDerive));
         }
@@ -79,6 +80,14 @@ namespace MathSyntax
         public double Calculate()
         {
             return A.Calculate() + B.Calculate();
+        }
+
+        public XElement Serialize()
+        {
+            var i = new XElement("Sum");
+            i.Add(A.Serialize());
+            i.Add(B.Serialize());
+            return i;
         }
     }
 }

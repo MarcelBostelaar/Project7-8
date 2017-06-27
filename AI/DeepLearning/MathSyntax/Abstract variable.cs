@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace MathSyntax
+namespace DeepLearning.MathSyntax
 {
     abstract class Abstract_variable : SyntaxBlock
     {
         protected ArgumentValue Argument;
         bool isAlwaysConstant;
 
-        public abstract SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive);
+    
+        public abstract SyntaxBlock Derivative(ArgumentValue ArgumentToDerive);
 
         protected Abstract_variable(ArgumentValue Argument, bool alwaysConstant)
         {
@@ -20,7 +22,7 @@ namespace MathSyntax
         }
         public abstract List<ArgumentValue> GetAllVariables(bool OnlyNonConstants);
 
-        public abstract bool IsConstant(VariableArgumentValue Non_Constant);
+        public abstract bool IsConstant(ArgumentValue Non_Constant);
 
         public SyntaxBlock Simplify()
         {
@@ -36,5 +38,7 @@ namespace MathSyntax
         {
             return Argument.Value;
         }
+
+        public abstract XElement Serialize();
     }
 }
