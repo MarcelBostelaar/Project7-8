@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace MathSyntax
+namespace DeepLearning.MathSyntax
 {
     /// <summary>
     /// The SyntaxBlock interface which all MathSyntax elements implement.
@@ -16,7 +17,7 @@ namespace MathSyntax
         /// </summary>
         /// <param name="Non_Constant">The ArgumentValue which you desire to not be treated as a constant.</param>
         /// <returns></returns>
-        bool IsConstant(VariableArgumentValue Non_Constant);
+        bool IsConstant(ArgumentValue Non_Constant);
         /// <summary>
         /// Prints the formula.
         /// </summary>
@@ -33,7 +34,7 @@ namespace MathSyntax
         /// </summary>
         /// <param name="ArgumentToDerive">The variable for which to calculate the derivative.</param>
         /// <returns>A derivative function of "ArgumentToDerive"</returns>
-        SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive);
+        SyntaxBlock Derivative(ArgumentValue ArgumentToDerive);
         /// <summary>
         /// Simplifies the formula
         /// </summary>
@@ -44,5 +45,10 @@ namespace MathSyntax
         /// </summary>
         /// <returns>The solution</returns>
         double Calculate();
+        /// <summary>
+        /// Serializes elements and all its child elements to x elements.
+        /// </summary>
+        /// <returns>An x element representing this mathsyntax block</returns>
+        XElement Serialize();
     }
 }

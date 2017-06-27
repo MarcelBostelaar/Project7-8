@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace MathSyntax
+namespace DeepLearning.MathSyntax
 {
     class NumericConstant : SyntaxBlock
     {
@@ -28,12 +29,12 @@ namespace MathSyntax
             return new List<ArgumentValue>();
         }
 
-        public bool IsConstant(VariableArgumentValue Non_Constant)
+        public bool IsConstant(ArgumentValue Non_Constant)
         {
             return true;
         }
 
-        public SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive)
+        public SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
         {
             return new NumericConstant(0);
         }
@@ -46,6 +47,13 @@ namespace MathSyntax
         public double Calculate()
         {
             return value;
+        }
+
+        public XElement Serialize()
+        {
+            var i = new XElement("NumericConstant");
+            i.Value = value.ToString();
+            return i;
         }
     }
 }

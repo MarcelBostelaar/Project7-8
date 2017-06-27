@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace MathSyntax
+namespace DeepLearning.MathSyntax
 {
     class Quotient : SyntaxBlock
     {
@@ -20,7 +21,7 @@ namespace MathSyntax
             return A.Calculate() / B.Calculate();
         }
 
-        public SyntaxBlock Derivative(VariableArgumentValue ArgumentToDerive)
+        public SyntaxBlock Derivative(ArgumentValue ArgumentToDerive)
         {
             //(A'*B + -1(B'*A))/(B*B) == (A'*B - B'*A)/B^2
             return new Quotient(new Sum(new Product(A.Derivative(ArgumentToDerive), B),
@@ -34,7 +35,7 @@ namespace MathSyntax
             return list;
         }
 
-        public bool IsConstant(VariableArgumentValue Non_Constant)
+        public bool IsConstant(ArgumentValue Non_Constant)
         {
             return A.IsConstant(Non_Constant) && B.IsConstant(Non_Constant);
         }
@@ -70,6 +71,18 @@ namespace MathSyntax
                 throw new DivideByZeroException("Can't devide by zero!");
             }
             return this; //No simplification possible, return this quotient in its existing state.
+        }
+
+        public XElement Serialize()
+        {
+            var i = new XElement("Quotient");
+            var a = new XElement("A");
+            a.Add(A.Serialize());
+            var b = new XElement("B");
+            b.Add(A.Serialize());
+            i.Add(a);
+            i.Add(b);
+            return i;
         }
     }
 }
