@@ -45,6 +45,31 @@ class Database(object):
             print(query)
         return result
 
+    #Get all kantinedata
+    def getkantinedata(self):
+        self.open_connection()
+        try:
+            self.cursor.execute("select * from kantinedata")
+            result = self.cursor.fetchall()
+            self.close_connetion()
+            return result
+        except:
+            pass
+            self.close_connection()
+        
+        
+    def postkantinedata(self, id, timein, timeout, date):
+        self.open_connection()
+        try:
+            self.cursor.execute("INSERT INTO kantinedata(id, timein, timeout, date) Values({0}, '{1}', '{2}', '{3}')".format(id, timein, timeout, date))
+            self.close_connetion()
+            return 200
+        except:
+            result = sys.exc_info()
+            print(result)
+            self.close_connetion()
+            return 400
+
     #Get function from raw query
     #Example: <database>.getraw("select * from testertable")
     def getrawquery(self, query):

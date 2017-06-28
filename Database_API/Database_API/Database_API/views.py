@@ -20,6 +20,24 @@ def dbposttest():
         return 500
     #{"query":"create table testtable"}
 
+@app.route('/db/get/kantinedata', methods=['GET'])
+def getkantinedata():
+    db = database.Database()
+    res = db.getkantinedata()
+    return jsonify(res)
+
+@app.route('/db/post/kantinedata', methods=['POST'])
+def postkantinedata():
+    db = database.Database()
+    post_data = request.get_json()
+    ID = post_data['id']
+    timein = post_data['timein']
+    timeout = post_data['timeout']
+    date = post_data['date']
+    result = db.postkantinedata(ID, timein, timeout, date)
+    return str(result)
+
+
 @app.route('/db/gettest/', methods=['POST'])
 def dbgettest():
     print("at dbgettest")
