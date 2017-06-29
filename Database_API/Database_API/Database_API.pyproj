@@ -46,6 +46,7 @@
     <Folder Include="Database_API\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ExtraInformatieDatabase.txt" />
     <Content Include="requirements.txt" />
     <Content Include="Database_API\static\content\bootstrap.css" />
     <Content Include="Database_API\static\content\bootstrap.min.css" />
