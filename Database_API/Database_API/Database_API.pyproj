@@ -30,6 +30,9 @@
     <Compile Include="Database_API\database.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Database_API\generatedata.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="runserver.py" />
     <Compile Include="Database_API\__init__.py" />
     <Compile Include="Database_API\views.py" />

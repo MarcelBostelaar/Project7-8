@@ -8,7 +8,7 @@ from Database_API import database
 
 
 if __name__ == '__main__':
-    HOST = environ.get('SERVER_HOST', 'localhost')
+    HOST = environ.get('SERVER_HOST', '145.24.222.31')
     try:
         PORT = int(environ.get('SERVER_PORT', '8080'))
     except ValueError:
