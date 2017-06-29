@@ -1,0 +1,3 @@
+Maak een boolean die "vakantiedag" heet. Deze moet true zijn als het een vakantie of feestdag is.
+Maak een int met de tempratuur
+Maak een boolean met "regen" die true is als het regent.
