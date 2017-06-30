@@ -2,17 +2,17 @@ import sqlite3
 import json
 import sys
 import os
-
+from Database_API.object import Object
 
 class Database(object):
 	# Contructior opens database
-	def __init__(self, databasePath = "Project78.db"):
+	def __init__(self, databasePath = "Database_API\Project78.db"):
 		self.databasePath = databasePath
 		self.select = ""
 		self.froms = ""
 
 	def open_connection(self):
-		self.connect = sqlite3.connect("Project78.db")
+		self.connect = sqlite3.connect("Database_API\Project78.db")
 
 		# this file test use route
 		self.cursor = self.connect.cursor()
@@ -51,6 +51,7 @@ class Database(object):
 			result = self.cursor.execute("drop table kantinedata")
 			self.cursor.execute("CREATE TABLE `Kantinedata` (`ID`	string,`timein`	time,`timeout`	time,`date`	date,`vakantiedag`	INTEGER,`temperatuur`	INTEGER,`regen`	INTEGEr);")
 			print(result)
+
 		except:
 			result = sys.exc_info()
 			print(result)
@@ -61,8 +62,13 @@ class Database(object):
 		try:
 			self.cursor.execute("select * from kantinedata")
 			result = self.cursor.fetchall()
+			print(result)
+			objects = []
+			for data in result:
+				obj = Object(data[0],data[1],data[2],data[3],data[4],data[5],data[6])
+				objects.append(obj.serialize())
 			self.close_connetion()
-			return result
+			return objects
 		except:
 			pass
 			self.close_connection()
@@ -95,6 +101,7 @@ class Database(object):
 			print("Get query error. \n", query)
 			return result
 		self.close_connetion()
+
 
 
 
