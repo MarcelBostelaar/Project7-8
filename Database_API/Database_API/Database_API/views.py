@@ -39,6 +39,26 @@ def postkantinedata():
 	# "regen":"0"
 	#}
 
+
+@app.route('/db/posttest/', methods=['POST'])
+def dbposttest():
+     jsonres = request.get_json()
+     db = database.Database()
+     try:
+         db.raw_query(jsonres["query"])
+         return 200
+     except:
+         return 500
+     #{"query":"create table testtable"}
+ 
+@app.route('/db/gettest/', methods=['POST'])
+def dbgettest():
+     jsonres = request.get_json()
+     print("jsonres == ", jsonres["query"])
+     db = database.Database()
+     return jsonify(db.getrawquery(jsonres["query"]))
+     #{"query":"select * from testertable"}
+
 @app.route('/')
 def home():
 	return jsonify("Project 7-8 web api")
