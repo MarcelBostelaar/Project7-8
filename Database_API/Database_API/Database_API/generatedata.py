@@ -28,7 +28,7 @@ def GenerateData():
 		if wheatherdata['vakantiedag'] == 1 and wheatherdata['temperature'] < 18 and wheatherdata['regen'] == 0:
 			#very high amounts of people in kantine
 			tmpint = random.randrange(23, 64)
-			for i in range(1, tmpint):
+    			for i in range(1, tmpint):
 				initials = generateInitials()
 				db.postkantinedata(initials['id'], initials['timein'], initials['timeout'], wheatherdata['date'], wheatherdata['vakantiedag'], wheatherdata['temperature'], wheatherdata['regen'])
 		else:
