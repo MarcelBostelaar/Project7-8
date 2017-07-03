@@ -2,7 +2,7 @@ import sqlite3
 import json
 import sys
 import os
-from Database_API.object import Object
+#from Database_API.object import Object
 
 class Database(object):
 	# Contructior opens database
@@ -47,8 +47,11 @@ class Database(object):
 
 	def resetdatabase(self):
 		try:
-			self.open_connection()
 			result = self.cursor.execute("drop table kantinedata")
+		except:
+			print("no table kantinedata")
+		try:
+			self.open_connection()
 			self.cursor.execute("CREATE TABLE `Kantinedata` (`ID`	string,`timein`	time,`timeout`	time,`date`	date,`vakantiedag`	INTEGER,`temperatuur`	INTEGER,`regen`	INTEGEr);")
 			print(result)
 
@@ -101,8 +104,6 @@ class Database(object):
 			print("Get query error. \n", query)
 			return result
 		self.close_connetion()
-
-
 
 
 
