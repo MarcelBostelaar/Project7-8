@@ -18,14 +18,15 @@ namespace AI
             {
                 json = wc.DownloadString("http://145.24.222.31:8080/db/get/kantinedata");
             }
-            var i = JsonConvert.DeserializeObject<String[][]>(json);
+            var i = JsonConvert.DeserializeObject<List<DatabaseEntry>>(json);
 
+            /*
             List<TrainingDataClass> all = new List<TrainingDataClass>();
 
             foreach (var item in i)
             {
                 all.AddRange(TrainingDataClass.GeneratePerTime(item));
-            }
+            }*/
         }
     }
 }
