@@ -28,7 +28,7 @@ def GenerateData():
 		if wheatherdata['vakantiedag'] == 1 and wheatherdata['temperature'] < 18 and wheatherdata['regen'] == 0:
 			#very high amounts of people in kantine
 			tmpint = random.randrange(23, 64)
-    			for i in range(1, tmpint):
+			for i in range(1, tmpint):
 				initials = generateInitials()
 				db.postkantinedata(initials['id'], initials['timein'], initials['timeout'], wheatherdata['date'], wheatherdata['vakantiedag'], wheatherdata['temperature'], wheatherdata['regen'])
 		else:
@@ -70,19 +70,19 @@ def generatedate():
 	regen = 0
 	#creating month
 	if month == 1 or month == 3:
-		day = random.randrange(0,31)
+		day = random.randrange(1,31)
 		temp = random.randrange(0, 15)
 	elif month == 2:
-		day = random.randrange(0,28)
+		day = random.randrange(1,28)
 		temp = random.randrange(0,11)
 	elif month == 5:
-		day = random.randrange(0,31)
+		day = random.randrange(1,31)
 		temp = random.randrange(13,28)
 	elif month == 4:
-		day = random.randrange(0,30)
+		day = random.randrange(1,30)
 		temp = random.randrange(7, 17)
 	else:
-		day = random.randrange(0,30)
+		day = random.randrange(1,30)
 		temp = random.randrange(16,35)
 	#chance of 1 out of 20 for a vakantiedag
 	vakantiedag = random.randrange(1,20)

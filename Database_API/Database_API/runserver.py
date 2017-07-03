@@ -5,6 +5,10 @@ This script runs the Database_API application using a development server.
 from os import environ
 from Database_API import app
 from Database_API import database
+from Database_API import generatedata
+
+db = database.Database()
+db.resetdatabase()
 
 
 if __name__ == '__main__':
