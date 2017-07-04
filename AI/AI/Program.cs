@@ -12,7 +12,7 @@ namespace AI
 {
     class Program
     {
-        static ArgumentValue timeSlot = new ArgumentValue(0);
+        static List<ArgumentValue> timeSlots = CreateTimeslots();
         static ArgumentValue vacation = new ArgumentValue(0);
         static ArgumentValue rain = new ArgumentValue(0);
         static ArgumentValue temprature = new ArgumentValue(0);
@@ -68,9 +68,10 @@ namespace AI
                 }
             }
 
-            List<ArgumentValue> inputs = new List<ArgumentValue> { timeSlot, vacation, rain, temprature };
+            List<ArgumentValue> inputs =  new List<ArgumentValue> { vacation, rain, temprature };
+            inputs.AddRange(timeSlots);
             
-            NeuralNetwork KantineVoorspelling = new NeuralNetwork(inputs, outputs, new int[] { 30, 30});
+            NeuralNetwork KantineVoorspelling = new NeuralNetwork(inputs, outputs, new int[] { 30});
 
             for (int times = 0; times < 10; times++)
             {
@@ -104,7 +105,7 @@ namespace AI
 
         static void SetLearningValues(LearningEntry entry)
         {
-            timeSlot.Value = entry.timeslot;
+            SetTimeslot(entry.timeslot);
             vacation.Value = entry.vacation;
             rain.Value = entry.rain;
             temprature.Value = entry.temprature;
@@ -124,7 +125,26 @@ namespace AI
         }
 
 
-        const int PeopleAmountInterval = 50;
+        static void SetTimeslot(int timeslot)
+        {
+            for (int i = 0; i < timeSlots.Count; i++)
+            {
+                timeSlots[i].Value = 0;
+            }
+            timeSlots[timeslot].Value = 1;
+        }
+
+        static List<ArgumentValue> CreateTimeslots()
+        {
+            List<ArgumentValue> timeslots = new List<ArgumentValue>();
+            for (int i = 0; i <= (24*60) / LearningEntry.timeIntervalMinutes; i++)
+            {
+                timeslots.Add(new ArgumentValue(0));
+            }
+            return timeslots;
+        }
+
+        const int PeopleAmountInterval = 20;
         const int maxAmountOfPeople = 100;
         static List<OutputData> CreateOutputIntervals()
         {
