@@ -14,7 +14,7 @@ namespace DeepLearning
 {
     public class NeuralNetwork
     {
-        private const double Stepsize = 0.01;
+        private const double Stepsize = 5;
 
         List<InputNeuron> Input = new List<InputNeuron>();
         List<OutputNeuron> Output = new List<OutputNeuron>();
