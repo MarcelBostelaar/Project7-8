@@ -8,6 +8,23 @@ using System.Threading.Tasks;
 
 namespace AI
 {
+    public class LearningEntry
+    {
+        public LearningEntry()
+        {
+            amountOfPeople = 1;
+        }
+
+        public const int timeIntervalMinutes = 15;
+
+        public int timeslot { get; set; }
+        public DateTime exactDateSlot { get; set; }
+        public int vacation { get; set; }
+        public int rain { get; set; }
+        public int temprature { get; set; }
+        public int amountOfPeople { get; set; }
+    }
+
     public class DatabaseEntry
     {
         public DateTime real_date { get; set; }
@@ -31,10 +48,29 @@ namespace AI
             }
         }
         public string id { get; set; }
-        public bool rain { get; set; }
+        public int rain { get; set; }
         public int temperature { get; set; }
         public DateTime time_in { get; set; }
         public DateTime time_out { get; set; }
-        public bool vacation { get; set; }
+        public int vacation { get; set; }
+
+        public List<LearningEntry> ToEntries()
+        {
+            List<LearningEntry> list = new List<LearningEntry>();
+            int timeslotIn = (time_in.Hour * 60 + time_in.Minute)/LearningEntry.timeIntervalMinutes;
+            int timeslotOut = (time_out.Hour * 60 + time_out.Minute)/LearningEntry.timeIntervalMinutes;
+
+            for (int i = timeslotIn; i <= timeslotOut; i++)
+            {
+                var newentry = new LearningEntry();
+                newentry.timeslot = i;
+                newentry.exactDateSlot = real_date + new TimeSpan(i * LearningEntry.timeIntervalMinutes / 60, i * LearningEntry.timeIntervalMinutes % 60, 0);
+                newentry.vacation = vacation;
+                newentry.rain = rain;
+                newentry.temprature = temperature;
+                list.Add(newentry);
+            }
+            return list;
+        }
     }
 }
