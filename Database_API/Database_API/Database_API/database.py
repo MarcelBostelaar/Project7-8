@@ -74,7 +74,7 @@ class Database(object):
 			return objects
 		except:
 			pass
-			self.close_connection()
+		#self.close_connection()
 		
 		
 	def postkantinedata(self, id, timein, timeout, date, vakantiedag, temperatuur, regen):

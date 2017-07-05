@@ -27,8 +27,11 @@ def postkantinedata():
 	vakantiedag = post_data['vakantiedag']
 	temperatuur = post_data['temperatuur']
 	regen = post_data['regen']
-	result = db.postkantinedata(ID, timein, timeout, date)
-	return str(result)
+	try:
+		result = db.postkantinedata(ID, timein, timeout, date, vakantiedag, temperatuur, regen)
+		return str(result), 200
+	except:
+		return str(result)
 	#Post example: 
 	#{"id":"2",
 	# "timein":"19:20:36",
