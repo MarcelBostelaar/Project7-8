@@ -1,5 +1,6 @@
 import math
 import random
+from Database_API import database
 
 class entry():
 
@@ -12,6 +13,9 @@ class entry():
         self.Temprature = 21
 
 def generateDataNew():
+    db = database.Database()
+    temperatuur = random.randrange(0,35)
+    id = 1
     alle_entries = []
     for maand in range(1, 13):
         for dag in range(1,29):
@@ -25,6 +29,7 @@ def generateDataNew():
                     date = "2017:" + (str)(maand) + ":" + (str)(dag)
                     for people in range(0,amountOfPeople):
                         alle_entries.append(entry(rain, vacation, timein, timeout, date))
+                        db.postkantinedata(id, timein, timeout, date, vacation, temperatuur, rain)
     return alle_entries
     
 
