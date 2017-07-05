@@ -7,6 +7,7 @@ using DeepLearning;
 using System.Net;
 using Newtonsoft.Json;
 using DeepLearning.MathSyntax;
+using System.IO;
 
 namespace AI
 {
@@ -48,14 +49,55 @@ namespace AI
                 }
             }
 
+            List<List<LearningEntry>> DataPerInterval = new List<List<LearningEntry>>();
+
+            for (int i = 0; i <= maxAmountOfPeople / PeopleAmountInterval; i++)
+            {
+                DataPerInterval.Add(new List<LearningEntry>());
+            }
+
+            foreach (var item in data.Values)
+            {
+                DataPerInterval[item.amountOfPeople / PeopleAmountInterval].Add(item);
+            }
+
+            int heighestIndex = 0;
+            for (int i = 0; i < DataPerInterval.Count; i++)
+            {
+                if (DataPerInterval[heighestIndex].Count < DataPerInterval[i].Count)
+                    heighestIndex++;
+            }
+
+            for (int i = 0; i < DataPerInterval.Count; i++)
+            {
+                if(i != heighestIndex && DataPerInterval[i].Count != 0)
+                {
+                    int index = 0;
+                    int startCount = DataPerInterval[i].Count;
+                    while(DataPerInterval[i].Count < DataPerInterval[heighestIndex].Count)
+                    {
+                        DataPerInterval[i].Add(DataPerInterval[i][index % startCount]);
+                        index++;
+                    }
+                }
+            }
+
+            List<LearningEntry> allData = new List<LearningEntry>();
+            foreach (var item in DataPerInterval)
+            {
+                allData.AddRange(item);
+            }
+
             List<LearningEntry> learningdata, testdata;
             learningdata = new List<LearningEntry>();
             testdata = new List<LearningEntry>();
 
+            StreamWriter results = new StreamWriter("Results.csv");
+
             //devide data into training and testing
             {
-                var RNG = new Random();
-                foreach (var item in data.Values)
+                var RNG = new Random(0);
+                foreach (var item in allData)
                 {
                     if(RNG.Next(1, 11) > 3)
                     {
@@ -68,12 +110,12 @@ namespace AI
                 }
             }
 
-            List<ArgumentValue> inputs =  new List<ArgumentValue> { vacation, rain, temprature };
+            List<ArgumentValue> inputs =  new List<ArgumentValue> { vacation, rain};
             inputs.AddRange(timeSlots);
             
-            NeuralNetwork KantineVoorspelling = new NeuralNetwork(inputs, outputs, new int[] { 30});
+            NeuralNetwork KantineVoorspelling = new NeuralNetwork(inputs, outputs, new int[] {20,10});
 
-            for (int times = 0; times < 10; times++)
+            for (int times = 0; times < 1; times++)
             {
                 for (int i = 0; i < learningdata.Count; i++)
                 {
@@ -101,6 +143,29 @@ namespace AI
                     }
                 }
             }
+            results.Write("Date;Rain;Temprature;Vacation;AmountOfPeople;;");
+            for (int k = 0; k <= maxAmountOfPeople / PeopleAmountInterval; k++)
+            {
+                results.Write(k * PeopleAmountInterval + ";");
+            }
+            results.Write("\n");
+            foreach (var item in testdata)
+            {
+                SetLearningValues(item);
+                KantineVoorspelling.CalculateResults();
+
+                results.Write(item.exactDateSlot.TimeOfDay.ToString() + ";" + item.rain + ";" + item.temprature + ";" + item.vacation + ";" + item.amountOfPeople + ";;");
+
+
+                double highestValue = Math.Abs(outputs[ReturnHighestOutput()].Value);
+
+                foreach (var result in outputs)
+                {
+                    results.Write((int)(result.Value/highestValue * 100) + ";");
+                }
+                results.Write("\n");
+            }
+            results.Close();
         }
 
         static void SetLearningValues(LearningEntry entry)
@@ -144,8 +209,8 @@ namespace AI
             return timeslots;
         }
 
-        const int PeopleAmountInterval = 20;
-        const int maxAmountOfPeople = 100;
+        const int PeopleAmountInterval = 30;
+        const int maxAmountOfPeople = 80;
         static List<OutputData> CreateOutputIntervals()
         {
             List<OutputData> outputs = new List<OutputData>();
