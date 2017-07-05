@@ -2,7 +2,7 @@ import sqlite3
 import json
 import sys
 import os
-#from Database_API.object import Object
+from Database_API.object import Object
 
 class Database(object):
 	# Contructior opens database
@@ -47,7 +47,7 @@ class Database(object):
 
 	def resetdatabase(self):
 		try:
-			result = self.cursor.execute("drop table kantinedata")
+			result = self.cursor.execute("drop table Kantinedata")
 		except:
 			print("no table kantinedata")
 		try:
@@ -63,16 +63,18 @@ class Database(object):
 	def getkantinedata(self):
 		self.open_connection()
 		try:
-			self.cursor.execute("select * from kantinedata")
+			self.cursor.execute("select * from Kantinedata")
 			result = self.cursor.fetchall()
 			print(result)
 			objects = []
 			for data in result:
 				obj = Object(data[0],data[1],data[2],data[3],data[4],data[5],data[6])
 				objects.append(obj.serialize())
-			self.close_connetion()
+			#self.close_connetion()
 			return objects
 		except:
+			error = sys.exc_info()
+			print(error)
 			pass
 		#self.close_connection()
 		
@@ -80,7 +82,7 @@ class Database(object):
 	def postkantinedata(self, id, timein, timeout, date, vakantiedag, temperatuur, regen):
 		self.open_connection()
 		try:
-			self.cursor.execute("INSERT INTO kantinedata(id, timein, timeout, date, vakantiedag, temperatuur, regen) Values({0}, '{1}', '{2}', '{3}', {4}, {5}, {6})".format(id, timein, timeout, date, vakantiedag, temperatuur, regen))
+			self.cursor.execute("INSERT INTO Kantinedata(id, timein, timeout, date, vakantiedag, temperatuur, regen) Values({0}, '{1}', '{2}', '{3}', {4}, {5}, {6})".format(id, timein, timeout, date, vakantiedag, temperatuur, regen))
 			self.close_connetion()
 			return 200
 		except:
