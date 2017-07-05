@@ -26,8 +26,9 @@ class TestEndpoints(unittest.TestCase):
         ), follow_redirects=True)
 
     def test_postkantinedata(self):
-        #data = dict("id='1' ,timein='12:33:02', timeout='12:57:02', date='2017:06:06', vakantiedag='0', temperatuur='18', regen='1'")
-        resp = self.postkantinedata('1','12:33:02', '12:57:02','2017:06:06', '0', '18', '1')
+        data = dict("id='1' ,timein='12:33:02', timeout='12:57:02', date='2017:06:06', vakantiedag='0', temperatuur='18', regen='1'")
+        #resp = self.app.post('/db/post/kantinedata', data=json.dumps(dict(id='1', timein='12:33:02', timeout='12:57:02', date='2017:06:06', vakantiedag='0', temperatuur='18', regen='1')), content_type='application/json')
+        resp = self.app.post('/db/post/kantinedata', data)
         self.assertEqual(resp.status_code, 200)
 
         
