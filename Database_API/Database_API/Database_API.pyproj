@@ -33,6 +33,9 @@
     <Compile Include="Database_API\generatedata.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Database_API\NewGenerateData.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Database_API\unittests.py">
       <SubType>Code</SubType>
     </Compile>
