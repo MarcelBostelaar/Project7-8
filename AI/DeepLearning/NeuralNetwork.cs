@@ -287,7 +287,7 @@ namespace DeepLearning
             return newNeuralNet;
         }
 
-        Random random = new Random(0);
+        Random random = new Random(2);
         int Counter = 0;
         /// <summary>
         /// Builds a new ArgumentValue with a random value between -1 and 1, to be used for inbetween nodes.

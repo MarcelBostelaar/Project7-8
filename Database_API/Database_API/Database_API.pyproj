@@ -27,6 +27,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Database_API\AI.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Database_API\database.py">
       <SubType>Code</SubType>
     </Compile>
@@ -55,6 +58,7 @@
     <Folder Include="Database_API\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Database_API\matrix.csv" />
     <Content Include="ExtraInformatieDatabase.txt" />
     <Content Include="requirements.txt" />
     <Content Include="Database_API\static\content\bootstrap.css" />

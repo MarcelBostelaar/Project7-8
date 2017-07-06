@@ -18,9 +18,12 @@ namespace AI
         static ArgumentValue rain = new ArgumentValue(0);
         static ArgumentValue temprature = new ArgumentValue(0);
 
+        static bool Load = false;
+
         static List<OutputData> outputs = CreateOutputIntervals();
 
 
+        [STAThread]
         static void Main(string[] args)
         {
             Dictionary<DateTime, LearningEntry> data = new Dictionary<DateTime, LearningEntry>();
@@ -122,8 +125,12 @@ namespace AI
 
             List<ArgumentValue> inputs =  new List<ArgumentValue> { vacation, rain};
             inputs.AddRange(timeSlots);
-            
-            NeuralNetwork KantineVoorspelling = new NeuralNetwork(inputs, outputs, new int[] {30});
+
+            NeuralNetwork KantineVoorspelling;
+            if (!Load)
+                KantineVoorspelling = new NeuralNetwork(inputs, outputs, new int[] { 30 });
+            else
+                KantineVoorspelling = NeuralNetwork.LoadMatrix(inputs, outputs);
 
             for (int times = 0; times < 1; times++)
             {
@@ -181,6 +188,7 @@ namespace AI
                 results.Write("\n");
             }
             results.Close();
+            KantineVoorspelling.SaveMatrix();
         }
 
         static void SetLearningValues(LearningEntry entry)
