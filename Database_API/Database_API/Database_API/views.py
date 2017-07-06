@@ -7,6 +7,7 @@ from datetime import datetime
 from flask import render_template, request
 from flask import jsonify
 from Database_API import app
+from Database_API import AI
 
 #Database
 @app.route('/db/get/kantinedata', methods=['GET'])
@@ -77,6 +78,18 @@ def dbgettest():
      db = database.Database()
      return jsonify(db.getrawquery(jsonres["query"]))
      #{"query":"select * from testertable"}
+
+# get predicted time
+@app.route('/getprediction', methods=['POST'])
+def AIgetprediction():
+    jsondata = request.get_json()
+    time = int(jsondata["tijd"])
+    vakantiedag = float(jsondata["vakantiedag"])
+    regen = float(jsondata["regent"])
+    f = AI.AI('matrix.csv')
+    answer = f.Calculate(time, regen, vakantiedag)
+    print(answer)
+    return jsonify(answer)
 
 @app.route('/')
 def home():

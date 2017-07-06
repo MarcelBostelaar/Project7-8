@@ -156,7 +156,5 @@ class Database(object):
             return result
         self.close_connetion()
 
-db = Database()
-db.getlast1000kantinedata()
 
 

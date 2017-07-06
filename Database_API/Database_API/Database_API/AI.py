@@ -52,7 +52,7 @@ class AI():
             return [60, 90]
         
 
-f = AI('matrix.csv')
-answer = f.Calculate(675, 1.0, 1.0)
+#f = AI('matrix.csv')
+#answer = f.Calculate(675, 1.0, 1.0)
 
 
