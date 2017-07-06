@@ -16,6 +16,13 @@ def getkantinedata():
     return jsonify(res)
     #returns kantinedata in JSON || gets all kantine data
 
+@app.route('/db/get/kantinedatalast1000', methods=['GET'])
+def getkantinedatalast1000():
+    db = database.Database()
+    res = db.getlast1000kantinedata()
+    return jsonify(res)
+    #returns kantinedata in JSON || gets all kantine data
+
 @app.route('/db/get/kantinedata1000', methods=['GET'])
 def getkantinedata1000():
     db = database.Database()
