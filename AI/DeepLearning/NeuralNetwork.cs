@@ -14,7 +14,7 @@ namespace DeepLearning
 {
     public class NeuralNetwork
     {
-        private const double Stepsize = 0.001;
+        private const double Stepsize = 0.01;
 
         List<InputNeuron> Input = new List<InputNeuron>();
         List<OutputNeuron> Output = new List<OutputNeuron>();
@@ -287,7 +287,7 @@ namespace DeepLearning
             return newNeuralNet;
         }
 
-        Random random = new Random();
+        Random random = new Random(0);
         int Counter = 0;
         /// <summary>
         /// Builds a new ArgumentValue with a random value between -1 and 1, to be used for inbetween nodes.
@@ -337,7 +337,7 @@ namespace DeepLearning
             double TotalLenght = Math.Sqrt(TotalLenghtSquared);
             foreach(var key in keys)
             {
-                key.Value -= TotalSlope[key] / TotalLenght * Stepsize;
+                key.Value += TotalSlope[key] / TotalLenght * Stepsize;
             }
         }
     }
