@@ -81,6 +81,34 @@ class Database(object):
             print(error)
             pass
 
+    def getlast1000kantinedata(self):
+        self.open_connection()
+        try:
+            self.cursor.execute("select * from Kantinedata")
+            result = self.cursor.fetchall()
+            rows = len(result)
+            if rows > 1000:
+                rows = rows - 1000
+            else:
+                print("Less than 1000 rows in database")
+                pass
+            objects = []
+            counter = 0
+            secondcounter = 0
+            for data in result:
+                if counter >= rows:
+                    obj = Object(data[0],data[1],data[2],data[3],data[4],data[5],data[6])
+                    objects.append(obj.serialize())
+                    secondcounter += 1
+                counter += 1
+                if secondcounter >= 999:
+                    return objects
+            #self.close_connetion()
+            return objects
+        except:
+            error = sys.exc_info()
+            print(error)
+            pass
 
     def getkantinedata(self):
         self.open_connection()
@@ -128,6 +156,7 @@ class Database(object):
             return result
         self.close_connetion()
 
-
+db = Database()
+db.getlast1000kantinedata()
 
 
