@@ -87,6 +87,16 @@ namespace AI
             {
                 allData.AddRange(item);
             }
+            List<LearningEntry> randomised = new List<LearningEntry>(allData.Count);
+            {
+                var RNG = new Random(0);
+                while (allData.Count > 0)
+                {
+                    var i = RNG.Next(allData.Count);
+                    randomised.Add(allData[i]);
+                    allData.RemoveAt(i);
+                }
+            }
 
             List<LearningEntry> learningdata, testdata;
             learningdata = new List<LearningEntry>();
@@ -97,7 +107,7 @@ namespace AI
             //devide data into training and testing
             {
                 var RNG = new Random(0);
-                foreach (var item in allData)
+                foreach (var item in randomised)
                 {
                     if(RNG.Next(1, 11) > 3)
                     {
@@ -113,7 +123,7 @@ namespace AI
             List<ArgumentValue> inputs =  new List<ArgumentValue> { vacation, rain};
             inputs.AddRange(timeSlots);
             
-            NeuralNetwork KantineVoorspelling = new NeuralNetwork(inputs, outputs, new int[] {20,10});
+            NeuralNetwork KantineVoorspelling = new NeuralNetwork(inputs, outputs, new int[] {30});
 
             for (int times = 0; times < 1; times++)
             {
@@ -156,13 +166,18 @@ namespace AI
 
                 results.Write(item.exactDateSlot.TimeOfDay.ToString() + ";" + item.rain + ";" + item.temprature + ";" + item.vacation + ";" + item.amountOfPeople + ";;");
 
-
-                double highestValue = Math.Abs(outputs[ReturnHighestOutput()].Value);
+                var highest = ReturnHighestOutput();
+                double highestValue = Math.Abs(outputs[highest].Value);
 
                 foreach (var result in outputs)
                 {
                     results.Write((int)(result.Value/highestValue * 100) + ";");
                 }
+                if (item.amountOfPeople / PeopleAmountInterval == highest || (item.amountOfPeople >= maxAmountOfPeople && highest == outputs.Count - 1))
+                    results.Write("1");
+                else
+                    results.Write("0");
+
                 results.Write("\n");
             }
             results.Close();
