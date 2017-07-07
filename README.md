@@ -3,10 +3,10 @@
 Repository van groepje 1 INF2C project 7-8.
 
 Deelnemers:
-Donald Overbeke - 0914964
-Eljakim Herrewijnen - 0912374
-Stef de Heus - 0890266
-Marcel Bostelaar - 0917554
+* Donald Overbeke - 0914964
+* Eljakim Herrewijnen - 0912374
+* Stef de Heus - 0890266
+* Marcel Bostelaar - 0917554
 
 ### AI voorspellingen voor kantine drukte met behulp van beacons voor dataverzameling TamTam
 
